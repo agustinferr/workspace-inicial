@@ -246,19 +246,46 @@ btnSendComentario.addEventListener("click", function(e){
 };
 */
 
-
+// Función para agregar el producto al carrito y redirigir a la página del carrito
 function toCart(){
     window.location = "cart.html";
     let idComprado = localStorage.getItem("prodID");
     console.log(idComprado)
+    // Si no existe un array de compras en el local storage, se crea uno
     if (!localStorage.getItem('idComprado')) {
 
         const arrayCompras = [];
         localStorage.setItem('idComprado', JSON.stringify(arrayCompras));
       }
+    // Se obtiene el array de compras almacenado en el local storage
     const storedArray = JSON.parse(localStorage.getItem('idComprado'));
+    // Se agrega el ID del producto actual al array de compras
     storedArray.push(idComprado);
+    // Se actualiza el array de compras en el local storage
     localStorage.setItem('idComprado', JSON.stringify(storedArray))
 };
+    
+const modoOscuroToggle = document.getElementById('modoOscuroToggle');
 
+const body = document.body
+
+// Agregar un evento de clic al interruptor del modo oscuro
+const cambiarModo = () => {
+  body.classList.toggle('modo-oscuro');
+
+  if (body.classList.contains('modo-oscuro')) {
+    localStorage.setItem('modo-oscuro', 'true');//Guardado en LocalStorage
+  } else {
+    localStorage.setItem('modo-oscuro', 'false');//Guardado en LocalStorage
+  }
+};
+modoOscuroToggle.addEventListener('click', cambiarModo);
+
+
+const modoOscuroGuardado = localStorage.getItem('modo-oscuro');
+if (modoOscuroGuardado === 'true') {
+  body.classList.add('modo-oscuro'); 
+} else {
+  body.classList.remove('modo-oscuro');
+}
 

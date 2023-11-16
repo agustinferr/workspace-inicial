@@ -92,12 +92,9 @@ async function fetchOtrosProductos() {
                     `;
                 }
                 // Obtiene elementos relevantes dentro de la fila
-                const cantidadInput = auxRow.querySelector(`#cantidadDeProductos${id}`);
-                
+                const cantidadInput = auxRow.querySelector(`#cantidadDeProductos${id}`);              
                 const subTotalElem = auxRow.querySelector(`#subTotalProdComprar${id}`);
-
-                const costoProd = auxRow.querySelector(`costProdComprar${id}`)
-                
+                const costoProd = auxRow.querySelector(`costProdComprar${id}`)               
                 const btnBorrarElemento = auxRow.querySelector("#elimProdComprar");
                 
                 cantidadInput.addEventListener("input", function() {
@@ -108,9 +105,6 @@ async function fetchOtrosProductos() {
                     console.log(nuevoSubtotal)
                     subTotalElem.textContent = `${data.currency} ${nuevoSubtotal}`;
                 });
-         
-               
-
                 // Agrega la fila de tabla al carrito
                 formCarrito.appendChild(auxRow);
                 // Agrega un evento al botón de eliminar para quitar el producto
@@ -126,32 +120,21 @@ async function fetchOtrosProductos() {
                         localStorage.setItem("idComprado", JSON.stringify(idComprado));
                     }
                 })
-                
-
-                
-                
-                
-
+                // Funciones para convertir entre dólares y pesos
                 function dolaresAPesos(dolares) {
                     return dolares * 39.9;
                 }
 
                 function pesosADolares(pesos) {
                     return pesos / 0.025;
-                }
-
-                
-                
-                    
-                    
-                
-               
-                
+                }                        
             })
+            // Manejo de errores para la obtención de productos
             .catch(function(error) {
                 console.error("Ocurrió el siguiente error: ", error);
             });
     });
+    // Esperar 300 ms antes de calcular y mostrar el total
     setTimeout(() => {
         const products = document.getElementsByClassName("subTotal")
     let subTotal = 0
@@ -168,7 +151,6 @@ async function fetchOtrosProductos() {
     }
         const contSubTotal= document.getElementById("MuestreoSubTotal")
         contSubTotal.innerHTML = `USD ${subTotal.toFixed()}`
-     
      
         let porcentajeEnvio = 0;
         let costoEnvio = 0;
@@ -192,7 +174,8 @@ async function fetchOtrosProductos() {
 }
 
 const tagProductos = document.getElementsByTagName("tbody")
-                console.log(tagProductos)
+
+// Evento click que calcula el subtotal y actualiza la información visual
 document.addEventListener("click",function subTotal() {
                     
     const products = document.getElementsByClassName("subTotal")
@@ -229,9 +212,7 @@ document.addEventListener("click",function subTotal() {
     let total = subTotal + costoEnvio;
     contenedorDelEnvio.textContent = `USD ${costoEnvio.toFixed()}`
     
-    contenedorTotal.textContent = `USD  ${total.toFixed()}`;
-      
-    
+    contenedorTotal.textContent = `USD  ${total.toFixed()}`;        
 });
 
     //habilitar deshabilitar campos del modal
@@ -279,49 +260,6 @@ document.addEventListener("click",function subTotal() {
             formaDePago.textContent = "No ha seleccionado";
         }
     }
-    
-
-    // Validaciones que realiza el botón finalizar compra
-    // document.getElementById('btnFinalizarCompra').addEventListener('click', function() {
-    //     // Obtener valores de los campos
-    //     const calle = document.getElementById('calle').value;
-    //     const numero = document.getElementById('numero').value;
-    //     const esquina = document.getElementById('esquina').value;
-    //     const formaEnvio = document.getElementById('formaEnvio').value;
-    //     const cantidadArticulo = document.getElementById('cantidadArticulo').value;
-    //     const formaPago = document.getElementById('formaPago').value;
-    //     const detallesPago = document.getElementById('detallesPago').value;
-    
-    //     // Realizar validaciones
-    //     if (calle.trim() === '' || numero.trim() === '' || esquina.trim() === '') {
-    //         alert('Los campos calle, número y esquina no pueden estar vacíos.');
-    //         return;
-    //     }
-    
-    //     if (formaEnvio === '') {
-    //         alert('Debes seleccionar una forma de envío.');
-    //         return;
-    //     }
-    
-    //     if (parseInt(cantidadArticulo) <= 0 || isNaN(cantidadArticulo)) {
-    //         alert('La cantidad para cada artículo debe ser mayor a 0.');
-    //         return;
-    //     }
-    
-    //     if (formaPago === '') {
-    //         alert('Debes seleccionar una forma de pago.');
-    //         return;
-    //     }
-    
-    //     // Realizar validaciones específicas para la forma de pago seleccionada
-    //     if (formaPago === 'tarjeta' && detallesPago.trim() === '') {
-    //         alert('Debes proporcionar los detalles de la tarjeta de crédito.');
-    //         return;
-    //     }
-    
-    //     // Si todas las validaciones pasan, puedes ejecutar la lógica para enviar el formulario
-    //     alert('Formulario enviado exitosamente!');
-    // });
 
     //Validacion
     (function () {
@@ -344,7 +282,6 @@ document.addEventListener("click",function subTotal() {
               event.preventDefault(); // No permite que se envíe el formulario si es inválido
               event.stopPropagation();
             }
-      
             form.classList.add('was-validated');
           }
           var selectedRadioButton = document.querySelector('input[name="opciones"]:checked');
@@ -376,7 +313,6 @@ document.addEventListener("click",function subTotal() {
           }
         });
       })();
-    
 
 // Evento que se dispara cuando la página se carga completamente
 document.addEventListener("DOMContentLoaded", function() {
@@ -389,19 +325,35 @@ document.addEventListener("DOMContentLoaded", function() {
         .catch(function (error) {
             console.error("Ha ocurrido algo con la carga de fetchOtrosProductos();: ", error);
         });
+        
+        if(localStorage.getItem('registro') != 'true'){
+            // Si no se ha registrado (basado en el valor en el almacenamiento local), mostrar una alerta y redirigir a "login.html"
+            alert("Usted no ha iniciado sesión.")
+            window.location.href = 'login.html'
+        }
+        // Dropmenu
+        let mmail = localStorage.getItem('mail');
+        let spanM = document.getElementById('mailNB');
+        if (mmail != null)
+        {
+        spanM.innerHTML = `${mmail}`;
+        }
+
 });
 
-
-
+// Obtener elementos de los radios de selección de envío
 let seleccion1 = document.getElementById("Seleccionradio1")
 let seleccion2 = document.getElementById("Seleccionradio2")
 let seleccion3 = document.getElementById("Seleccionradio3")
 
-
+// Agregar un event listener al primer radio de selección
 seleccion1.addEventListener("change",function(){
 
+    // Inicializar variables para el porcentaje y costo de envío
     let porcentajeEnvio = 0;
     let costoEnvio = 0;
+
+    // Verificar cuál de los radios de envío está seleccionado y asignar el porcentaje correspondiente
     if (envio1.checked){
         porcentajeEnvio = 0.15; //15%
     } else if (envio2.checked){
@@ -410,10 +362,37 @@ seleccion1.addEventListener("change",function(){
         porcentajeEnvio = 0.05; //5%
     }
     console.log(porcentajeEnvio)
-
+    
+    // Calcular el costos
     costoEnvio = subTotal * porcentajeEnvio;
     let total = subTotal + costoEnvio;
-    contenedorDelEnvio.textContent = `USD ${costoEnvio.toFixed()}`
-    
+     // Actualizar la información visual con el costo de envío y el total
+    contenedorDelEnvio.textContent = `USD ${costoEnvio.toFixed()}` 
     contenedorTotal.textContent = `USD  ${total.toFixed()}`;
 })
+
+    
+
+
+const body = document.body
+
+// Agregar un evento de clic al interruptor del modo oscuro
+const cambiarModo = () => {
+  body.classList.toggle('modo-oscuro');
+
+  if (body.classList.contains('modo-oscuro')) {
+    localStorage.setItem('modo-oscuro', 'true');//Guardado en LocalStorage
+  } else {
+    localStorage.setItem('modo-oscuro', 'false');//Guardado en LocalStorage
+  }
+};
+modoOscuroToggle.addEventListener('click', cambiarModo);
+
+
+const modoOscuroGuardado = localStorage.getItem('modo-oscuro');
+if (modoOscuroGuardado === 'true') {
+  body.classList.add('modo-oscuro'); 
+} else {
+  body.classList.remove('modo-oscuro');
+}
+
